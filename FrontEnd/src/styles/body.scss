@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+.font {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-size: 13px;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.swiper-pagination-bullet {
+  background-color: rgb(132, 118, 118);
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: rgb(38, 15, 112); /* Đổi màu cho nút điều hướng */
+  width: 60px; /* Thiết lập chiều rộng */
+  height: 60px; /* Thiết lập chiều cao */
+  background-color: rgba(255, 254, 254, 0.792);
+  border-radius: 50%;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  color: rgb(38, 15, 112);
+  font-size: 20px !important;
+  font-weight: 800;
+}
