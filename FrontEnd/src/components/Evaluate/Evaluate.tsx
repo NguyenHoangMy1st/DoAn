@@ -1,17 +1,22 @@
+import React, { useState } from 'react'
 import { Rate } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import { useState } from 'react'
 import { toast } from 'react-toastify'
 import productApi from 'src/apis/product.api'
+
 interface EvaluateProps {
   productId: string // Define the type of productId
+  handleClose: () => void // Define handleClose prop as a function
+  setReviewSuccess: any
 }
-export default function Evaluate({ productId }: EvaluateProps) {
+
+const Evaluate = ({ productId, handleClose, setReviewSuccess }: EvaluateProps) => {
   const [rating, setRating] = useState(0) // State for rating value
   const [comment, setComment] = useState('') // State for comment text
 
-  const handleRatingChange = (value: any) => setRating(value)
-  const handleCommentChange = (event: any) => setComment(event.target.value)
+  const handleRatingChange = (value: number) => setRating(value) // Ensure value is number
+  const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => setComment(event.target.value)
+
   const handleComment = async () => {
     if (!rating || !comment) {
       // Handle validation errors (optional: display error message to user)
@@ -28,9 +33,13 @@ export default function Evaluate({ productId }: EvaluateProps) {
 
       if (response.status === 200) {
         // Handle successful submission (optional: show success message, clear form)
-        toast.success('Cảm ơn bạn đã đánh giá cho chúng tôi!!!')
+        toast.success('Cảm ơn bạn đã đánh giá cho chúng tôi', {
+          autoClose: 1300 // Thời gian đóng tự động sau 2000 miligiây (2 giây)
+        })
+        setReviewSuccess(true)
         setRating(0)
         setComment('')
+        handleClose() // Close the modal using the handleClose function passed from parent
       } else {
         // Handle API errors (optional: display error message to user)
         toast.error('Vui lòng thử lại')
@@ -40,6 +49,7 @@ export default function Evaluate({ productId }: EvaluateProps) {
       toast.error('Vui lòng thử lại')
     }
   }
+
   return (
     <div className='px-4 py-3'>
       <div className='w-full'>
@@ -83,3 +93,5 @@ export default function Evaluate({ productId }: EvaluateProps) {
     </div>
   )
 }
+
+export default Evaluate

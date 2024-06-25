@@ -73,12 +73,16 @@ export default function Header() {
           </form>
           <div className='cols-span-1 justify-center ml-8'>
             <div className='flex-grow-1 w-[190px]'>
-              <Link to='/'>
-                <div className='flex flex-wrap gap-3 items-center text-cyan-800  w-full'>
-                  <FaPhone className='text-3xl' />
-                  <div className='flex flex-col gap-1 '>
-                    <span className='text-gray-100 font-medium text-sm '>Hỗ trợ khách hàng</span>
-                    <span className='text-gray-900 font-semibold text-sm '>18250.1257</span>
+              <Link to='/user/user/input'>
+                <div className='flex flex-wrap gap-2 items-center text-cyan-800  w-full'>
+                  <div className='h-[40px] w-[40px] '>
+                    <img
+                      src='https://png.pngtree.com/png-clipart/20230429/original/pngtree-robot-artificial-intelligence-technology-transparent-png-image_9123453.png'
+                      alt=''
+                    ></img>
+                  </div>
+                  <div className='flex flex-col '>
+                    <span className='text-gray-100 font-medium text-sm '>Gợi ý</span>
                   </div>
                 </div>
               </Link>

@@ -8,7 +8,6 @@ import commonRoutes from './routes/common/index.route'
 import userRoutes from './routes/user/index.route'
 import { responseError } from './utils/response'
 import { FOLDERS, FOLDER_UPLOAD, ROUTE_IMAGE } from './constants/config'
-import axios from 'axios'
 import path from 'path'
 import { isProduction } from './utils/helper'
 require('dotenv').config()
@@ -41,7 +40,6 @@ routes.forEach((item) =>
 app.use(function (err: any, req: any, res: any, next: any) {
   responseError(res, err)
 })
-
 
 app.listen(process.env.PORT, function () {
   console.log(chalk.greenBright(`API listening on port ${process.env.PORT}!`))

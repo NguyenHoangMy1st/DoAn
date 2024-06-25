@@ -14,7 +14,7 @@ import { purchasesStatus } from 'src/constants/purchase'
 
 import Product from '../ProductList/Product'
 import path from 'src/constants/path'
-import { FaHandHoldingHeart, FaHeartbeat, FaStar } from 'react-icons/fa'
+import { FaHandHoldingHeart, FaHeartbeat, FaStar, FaRegStar } from 'react-icons/fa'
 import { GrDeliver } from 'react-icons/gr'
 import Evaluate from 'src/components/Evaluate'
 import { format } from 'date-fns'
@@ -44,12 +44,14 @@ const ProductDetail: React.FC = () => {
 
   const [buyCount, setBuyCount] = useState(1)
   const id = getIdFromNameId(nameId as string)
-  const { data: productDetailData } = useQuery({
+  const { data: productDetailData, refetch } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
   })
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
   const [activeImage, setActiveImage] = useState('')
+  const [reviewSuccess, setReviewSuccess] = useState(false)
+  const [ratingCounts, setRatingCounts] = useState([0, 0, 0, 0, 0])
   const product = productDetailData?.data.data
   const imageRef = useRef<HTMLImageElement>(null)
   const currentImages = useMemo(
@@ -95,6 +97,7 @@ const ProductDetail: React.FC = () => {
   }
   const showModal = () => {
     setIsModalOpen(true)
+    setReviewSuccess(false)
   }
   const handleOk = () => {
     setIsModalOpen(false)
@@ -151,7 +154,21 @@ const ProductDetail: React.FC = () => {
       }
     })
   }
-
+  useEffect(() => {
+    refetch()
+  }, [reviewSuccess])
+  useEffect(() => {
+    if (product && product.comment) {
+      const counts = [0, 0, 0, 0, 0]
+      product.comment.forEach((comment) => {
+        if (comment.rating >= 1 && comment.rating <= 5) {
+          counts[comment.rating - 1]++
+        }
+      })
+      setRatingCounts(counts)
+    }
+  }, [product, reviewSuccess])
+  console.log(productDetailData)
   if (!product) return null
   return (
     <div className='bg-neutral-100 pt-10 pb-20'>
@@ -224,11 +241,6 @@ const ProductDetail: React.FC = () => {
                   <span className='mr-1 border-b border-b-orange-400 text-orange-500'>
                     {product.view} Lượt xem sản phẩm
                   </span>
-                  {/* <ProductRating
-                    rating={product.rating}
-                    activeClassname='fill-orange-400 text-orange-400 h-4 w-4'
-                    nonActiveClassname='fill-gray-300 text-gray-300 h-4 w-4'
-                  /> */}
                 </div>
                 <div className='mx-4 h-4 w-[1px] bg-gray-300'></div>
                 <div>
@@ -294,21 +306,18 @@ const ProductDetail: React.FC = () => {
 
               <div className='pt-7 flex gap-2 justify-between'>
                 <div className='flex flex-1 text-[#1CA7EC] gap-2'>
-                  {/* <img src='mienphi.png' alt='' className='w-5 h-5' /> */}
                   <FaHeartbeat className='text-[20px]' />
                   <Popover placement='bottom' content={content1}>
                     <span className='text-gray-700'>Sức khỏe của bạn là tài sản quý giá nhất</span>
                   </Popover>
                 </div>
                 <div className='flex flex-1 text-[#1CA7EC] gap-2'>
-                  {/* <img src='baomat.png' alt='' className='w-5 h-5' /> */}
                   <FaHandHoldingHeart className='text-[20px]' />
                   <Popover placement='bottom' content={content2}>
                     <span className='text-gray-700'>Sản phẩm được kiểm kê chất lượng</span>
                   </Popover>
                 </div>
                 <div className='flex flex-1 text-[#1CA7EC] gap-2'>
-                  {/* <img src='vanchuyen.png' alt='' className='w-5 h-5' /> */}
                   <GrDeliver className='text-[20px]' />
                   <Popover placement='bottom' content={content3}>
                     <span className='text-gray-700'>Miễn phí vận chuyển</span>
@@ -329,6 +338,8 @@ const ProductDetail: React.FC = () => {
               }}
             />
           </div>
+          <div className='rounded bg-neutral-100 p-4 text-lg capitalize text-slate-700'>Thành phần dinh dưỡng</div>
+          <div className='mx-4 mt-12 mb-4 text-sm leading-loose'>{product.ingredient}</div>
         </div>
       </div>
       <div className='container'>
@@ -339,7 +350,7 @@ const ProductDetail: React.FC = () => {
           >
             <div className='flex flex-col'>
               <div className='flex justify-between'>
-                <span className='text-left text-xl font-bold'>12 đánh giá</span>
+                <span className='text-left text-xl font-bold'>{product?.comment?.length} đánh giá</span>
                 <button
                   className='uppercase text-[16px] font-bold underline decoration-1 hover:text-black/70'
                   onClick={showModal}
@@ -347,7 +358,7 @@ const ProductDetail: React.FC = () => {
                   Viết đánh giá
                 </button>
                 <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel} width={800} footer={null}>
-                  <Evaluate productId={product._id} />
+                  <Evaluate productId={product._id} handleClose={handleCancel} setReviewSuccess={setReviewSuccess} />
                 </Modal>
               </div>
               <div className='flex gap-2 text-orange-500 text-[30px] text-left mt-6 text-yellow-300'>
@@ -358,108 +369,72 @@ const ProductDetail: React.FC = () => {
                 <FaStar />
               </div>
               <div className='flex flex-col gap-4 mt-8 '>
-                <div className='flex gap-2  w-full item-center justify-center h-[30px] text-base'>
-                  <span className='text-end p-1 '>5</span>
-                  <div className='w-full flex items-center justify-center '>
-                    <div className=' w-full box-border  leading-snug'>
-                      <div className='w-full'>
-                        <div className='h-[5px] bg-[#dfdfdf]  overflow-hidden rounded-[100px] w-full   '>
-                          <div
-                            className='ant-progress-bg flex items-center justify-center'
-                            style={{ width: '66.6667%', height: '5px', background: 'rgb(0, 0, 0)' }}
-                          ></div>
+                {[5, 4, 3, 2, 1].map((rating, index) => {
+                  const count = ratingCounts[rating - 1]
+                  const totalComments = product?.comment?.length
+                  const percentage = totalComments > 0 ? (count / totalComments) * 100 : 0
+
+                  return (
+                    <div key={index} className='flex gap-2 w-full item-center justify-center h-[30px] text-base'>
+                      <span className='text-end p-1'>{rating}</span>
+                      <div className='w-full flex items-center justify-center'>
+                        <div className='w-full box-border leading-snug'>
+                          <div className='w-full'>
+                            <div className='h-[5px] bg-[#dfdfdf] overflow-hidden rounded-[100px] w-full'>
+                              <div
+                                className='ant-progress-bg flex items-center justify-center'
+                                style={{
+                                  width: `${percentage}%`,
+                                  height: '5px',
+                                  background: 'rgb(0, 0, 0)'
+                                }}
+                              ></div>
+                            </div>
+                          </div>
                         </div>
                       </div>
+                      <span className='text-center h-[30px] p-1'>({count})</span>
                     </div>
-                  </div>
-                  <span className=' text-center h-[30px] p-1'>(8)</span>
-                </div>
-                <div className='flex gap-2  w-full item-center justify-center h-[30px] text-base'>
-                  <span className='text-end p-1 '>4</span>
-                  <div className='w-full flex items-center justify-center '>
-                    <div className=' w-full box-border  leading-snug'>
-                      <div className='w-full'>
-                        <div className='h-[5px] bg-[#dfdfdf]  overflow-hidden rounded-[100px] w-full   '>
-                          <div
-                            className='ant-progress-bg flex items-center justify-center'
-                            style={{ width: '0%', height: '5px', background: 'rgb(0, 0, 0)' }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <span className=' text-center h-[30px] p-1'>(0)</span>
-                </div>
-                <div className='flex gap-2  w-full item-center justify-center h-[30px] text-base'>
-                  <span className='text-end p-1 '>3</span>
-                  <div className='w-full flex items-center justify-center '>
-                    <div className=' w-full box-border  leading-snug'>
-                      <div className='w-full'>
-                        <div className='h-[5px] bg-[#dfdfdf]  overflow-hidden rounded-[100px] w-full   '>
-                          <div
-                            className='ant-progress-bg flex items-center justify-center'
-                            style={{ width: '0%', height: '5px', background: 'rgb(0, 0, 0)' }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <span className=' text-center h-[30px] p-1'>(0)</span>
-                </div>
-                <div className='flex gap-2  w-full item-center justify-center h-[30px] text-base'>
-                  <span className='text-end p-1 '>2</span>
-                  <div className='w-full flex items-center justify-center '>
-                    <div className=' w-full box-border  leading-snug'>
-                      <div className='w-full'>
-                        <div className='h-[5px] bg-[#dfdfdf]  overflow-hidden rounded-[100px] w-full   '>
-                          <div
-                            className='ant-progress-bg flex items-center justify-center'
-                            style={{ width: '0%', height: '5px', background: 'rgb(0, 0, 0)' }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <span className=' text-center h-[30px] p-1'>(0)</span>
-                </div>
-                <div className='flex gap-2  w-full item-center justify-center h-[30px] text-base'>
-                  <span className='text-end p-1 '>1</span>
-                  <div className='w-full flex items-center justify-center '>
-                    <div className=' w-full box-border  leading-snug'>
-                      <div className='w-full'>
-                        <div className='h-[5px] bg-[#dfdfdf]  overflow-hidden rounded-[100px] w-full   '>
-                          <div
-                            className='ant-progress-bg flex items-center justify-center'
-                            style={{ width: '0', height: '5px', background: 'rgb(0, 0, 0)' }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <span className=' text-center h-[30px] p-1'>(0)</span>
-                </div>
+                  )
+                })}
               </div>
             </div>
             <div
               className='flex flex-col gap-2 w-[90%] scrollable-container'
               style={{ maxHeight: '455px', overflowY: 'auto' }}
             >
-              {product?.comment?.map((commentIndex) => (
-                <div className='flex flex-col text-[14px] border-white border-b-gray-100 border-2 pb-4 w-[91%] '>
-                  <span>{commentIndex?.user?.email}</span>
-                  <div className='flex gap-3 mt-2'>
-                    <div className='flex gap-1 text-orange-500 text-[13px] pr-3 text-yellow-300'>
-                      <FaStar />
-                      <FaStar />
-                      <FaStar />
-                      <FaStar />
-                      <FaStar />
+              {product?.comment && product?.comment?.length > 0 ? (
+                product?.comment
+                  ?.slice()
+                  ?.reverse()
+                  ?.map((commentIndex, index) => (
+                    <div
+                      className='flex flex-col text-[14px] border-white border-b-gray-100 border-2 pb-4 w-[91%]'
+                      key={index}
+                    >
+                      <span>{commentIndex?.user?.email}</span>
+                      <div className='flex gap-3 mt-2'>
+                        <div className='flex gap-1 text-orange-500 text-[13px] pr-3'>
+                          {Array.from({ length: 5 }, (_, i) =>
+                            i < commentIndex.rating ? <FaStar key={i} /> : <FaRegStar key={i} />
+                          )}
+                        </div>
+                        <div className='text-gray-400'>
+                          {commentIndex?.date && (
+                            <div className='text-gray-400'>
+                              {format(new Date(commentIndex.date), 'dd/MM/yyyy HH:mm:ss')}
+                            </div>
+                          )}{' '}
+                        </div>
+                      </div>
+                      <p className='text-base mt-2'>{commentIndex.commentItem}</p>
                     </div>
-                    <div className='text-gray-400 '>{format(new Date(commentIndex?.date), 'dd/MM/yyyy HH:mm:ss')}</div>
-                  </div>
-                  <p className='text-base mt-2'>{commentIndex?.commentItem}</p>
+                  ))
+              ) : (
+                <div className='flex flex-col text-[14px] border-white border-b-gray-100 border-2 pb-4 w-[91%]'>
+                  <span>No comments available.</span>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
