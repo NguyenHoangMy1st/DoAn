@@ -26,6 +26,8 @@ import Forgetpassword from './pages/Forgetpassword'
 import DeteledProducts from './pages/Admin/pages/DeteledProducts'
 import Brands from './pages/Admin/pages/Brands'
 import FilterBrand from './pages/FilterBrand'
+import { useQuery } from 'react-query'
+import userApi from './apis/user.api'
 
 // import FormAccountEdit from './pages/Admin/component/FormAccountEdit'
 
@@ -40,9 +42,14 @@ function RejectedRoute() {
 }
 
 function AdminProtectedRoute() {
-  const { isAuthenticated, user } = useContext(AppContext)
-  // console.log(user)
-  return isAuthenticated && user && user.roles.includes('Admin') ? <Outlet /> : <Navigate to='/login' />
+  const { isAuthenticated } = useContext(AppContext)
+  const { data: profileData } = useQuery({
+    queryKey: ['profile'],
+    queryFn: userApi.getProfile
+  })
+  const profile = profileData?.data.data
+
+  return isAuthenticated && profile && profile.roles.includes('Admin') ? <Outlet /> : <Navigate to='/login' />
 }
 
 export default function UseRouterElement() {
@@ -139,7 +146,7 @@ export default function UseRouterElement() {
       path: path.productBrand,
       element: (
         <MainLayout>
-      <FilterBrand/>
+          <FilterBrand />
         </MainLayout>
       )
     },

@@ -32,9 +32,9 @@ adminProductRouter.get(
  */
 adminProductRouter.get(
   '/all',
-  // authMiddleware.verifyAccessToken,
-  // authMiddleware.verifyAdmin,
-  // productMiddleware.getAllProductsRules(),
+  authMiddleware.verifyAccessToken,
+  authMiddleware.verifyAdmin,
+  productMiddleware.getAllProductsRules(),
   helpersMiddleware.entityValidator,
   wrapAsync(ProductController.getAllProducts)
 )

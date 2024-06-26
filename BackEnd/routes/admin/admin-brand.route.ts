@@ -9,7 +9,7 @@ const adminBrandRouter = Router()
 adminBrandRouter.get(
   '',
   authMiddleware.verifyAccessToken,
-  // authMiddleware.verifyAdmin,
+  authMiddleware.verifyAdmin,
   helpersMiddleware.entityValidator,
   wrapAsync(brandController.getBrands)
 )
@@ -17,7 +17,7 @@ adminBrandRouter.get('/brands', wrapAsync(brandController.getBrands))
 adminBrandRouter.get(
   '/:brand_id',
   authMiddleware.verifyAccessToken,
-  // authMiddleware.verifyAdmin,
+  authMiddleware.verifyAdmin,
   helpersMiddleware.idRule('brand_id'),
   helpersMiddleware.idValidator,
   wrapAsync(brandController.getBrand)
