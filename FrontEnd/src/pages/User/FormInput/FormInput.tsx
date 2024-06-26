@@ -1,8 +1,11 @@
 import { Button, ConfigProviderProps, Form, Image, Input, Modal, Select, SelectProps } from 'antd'
+import path from 'src/constants/path'
 import { useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import userApi from 'src/apis/user.api'
+import { generateNameId } from 'src/utils/utils'
 type SizeType = ConfigProviderProps['componentSize']
 const options: SelectProps['options'] = [
   { label: 'Hạ canxi máu(tụt canxi)', value: 'Hạ canxi máu(tụt canxi)' },
@@ -351,7 +354,17 @@ export default function FormInput() {
                         <Image width={80} src={product?.image} style={{ borderRadius: '5px' }} />
                       </td>
 
-                      <td className='py-2 text-start pl-10'>{product?.name}</td>
+                      <td className='py-2 text-start pl-10'>
+                        <Link
+                          to={`${path.home}${generateNameId({ name: product.name, id: product._id })}`}
+                          className=' h-[419px] font py-2 text-center pl-10'
+                          onClick={() => {
+                            window.scrollTo(0, 0)
+                          }}
+                        >
+                          {product?.name}
+                        </Link>
+                      </td>
                       <td className='px-4 py-2 text-start'>{product?.ingredient}</td>
                     </tr>
                   </>
