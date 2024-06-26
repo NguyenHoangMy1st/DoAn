@@ -24,6 +24,7 @@ const getExpire = (req: Request) => {
     expireRefreshTokenConfig,
   }
 }
+// lấy accesstoken và refresh lưu vào db
 
 const registerController = async (req: Request, res: Response) => {
   const { expireAccessTokenConfig, expireRefreshTokenConfig } = getExpire(req)
@@ -40,7 +41,7 @@ const registerController = async (req: Request, res: Response) => {
     const payloadJWT: PayloadToken = {
       email,
       id: userAdd._id,
-      roles: [ROLE.USER], 
+      roles: [ROLE.USER],
       created_at: new Date().toISOString(),
     }
     const access_token = await signToken(

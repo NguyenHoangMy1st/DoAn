@@ -28,13 +28,3 @@ const MailConfig = {
 }
 
 export default MailConfig
-
-export const GoogleConfig = {
-  SECRET_KEY: '098504kin',
-  EXPIRE_ACCESS_TOKEN: 3600,
-  EXPIRE_REFRESH_TOKEN: 604800,
-  GOOGLE_CLIENT_ID:
-    '560087647346-tm836lofitp45k1rt953fjin5bo14mra.apps.googleusercontent.com',
-  REDIRECT_URI: 'http://localhost:4000/api/oauth/google',
-  API_URL: 'http://localhost:4000',
-}
