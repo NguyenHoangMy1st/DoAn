@@ -65,7 +65,7 @@ function FormAccount() {
       key: 'action',
       render: (record) => (
         <Space size='middle'>
-          <button
+          {/* <button
             onClick={() => handleDelete(record._id)}
             className='bg-none text-black transition-colors hover:text-blue'
           >
@@ -75,7 +75,7 @@ function FormAccount() {
                 d='M7 21q-.825 0-1.413-.588T5 19V6q-.425 0-.713-.288T4 5q0-.425.288-.713T5 4h4q0-.425.288-.713T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.588 1.413T17 21H7ZM17 6H7v13h10V6ZM9 17h2V8H9v9Zm4 0h2V8h-2v9ZM7 6v13V6Z'
               />
             </svg>
-          </button>
+          </button> */}
           <button
             type='button'
             onClick={() => handleEdit(record._id)}
@@ -195,6 +195,8 @@ function FormAccount() {
         />
       </>
     )
+  } else {
+    return null
   }
 }
 
