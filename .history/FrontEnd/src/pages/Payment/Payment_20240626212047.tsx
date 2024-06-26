@@ -89,7 +89,7 @@ export default function Payment({ checkedPurchases, totalCheckedPurchasePrice, o
         autoClose: 1200
       })
     } else {
-      setIsPayPalButtonSuccess(true)
+      setIsPayPalButtonSuccess(false)
       setTimeout(() => {
         buyProductsMutation.mutate(body)
         toast.success('Thanh toán thành công', {
@@ -231,7 +231,7 @@ export default function Payment({ checkedPurchases, totalCheckedPurchasePrice, o
                         <Radio
                           value='paypal'
                           onChange={() => {
-                            setPayment((prevPayment) => ({ ...prevPayment, paymentMethod: 1 }))
+                            setPayment((prevPayment) => ({ ...prevPayment, paymentMethod: 2 }))
                             setShowPayPalButton(true)
                           }}
                         >

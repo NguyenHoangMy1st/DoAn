@@ -231,7 +231,7 @@ export default function Payment({ checkedPurchases, totalCheckedPurchasePrice, o
                         <Radio
                           value='paypal'
                           onChange={() => {
-                            setPayment((prevPayment) => ({ ...prevPayment, paymentMethod: 1 }))
+                            setPayment((prevPayment) => ({ ...prevPayment, paymentMethod: 2 }))
                             setShowPayPalButton(true)
                           }}
                         >

@@ -135,6 +135,16 @@ export default function TableHistoryAdmin() {
           </ConfigProvider>
         )
       }
+    },
+    {
+      title: 'Phương thức thanh toán',
+      dataIndex: 'paymentMethod',
+      key: 'paymentMethod'
+    },
+    {
+      title: 'Thời gian đặt hàng',
+      dataIndex: 'createAt',
+      key: 'createAt'
     }
   ]
   if (paymentData) {

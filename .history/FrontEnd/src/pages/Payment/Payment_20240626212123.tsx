@@ -98,9 +98,9 @@ export default function Payment({ checkedPurchases, totalCheckedPurchasePrice, o
         })
       }, 2500)
 
-      setTimeout(() => {
-        onPaymentSuccess()
-      }, 2500)
+      // setTimeout(() => {
+      //   onPaymentSuccess()
+      // }, 2500)
     }
   }
   const total: any = (totalCheckedPurchasePrice / 24000).toFixed(2)
@@ -231,7 +231,7 @@ export default function Payment({ checkedPurchases, totalCheckedPurchasePrice, o
                         <Radio
                           value='paypal'
                           onChange={() => {
-                            setPayment((prevPayment) => ({ ...prevPayment, paymentMethod: 1 }))
+                            setPayment((prevPayment) => ({ ...prevPayment, paymentMethod: 2 }))
                             setShowPayPalButton(true)
                           }}
                         >

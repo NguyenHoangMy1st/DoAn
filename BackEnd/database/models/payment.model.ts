@@ -21,8 +21,8 @@ const PaymentSchema = new Schema(
     city: { type: String },
     phone: { type: String },
     paymentMethod: { type: Number, default: 0 },
-    status: { type: Number, default: STATUS_ORDER.WAIT_FOR_CONFIRMATION },
     // 0: cash, 1: paypal
+    status: { type: Number, default: STATUS_ORDER.WAIT_FOR_CONFIRMATION },
   },
   {
     timestamps: true,

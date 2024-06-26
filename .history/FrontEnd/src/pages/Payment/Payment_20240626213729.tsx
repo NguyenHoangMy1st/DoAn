@@ -247,7 +247,7 @@ export default function Payment({ checkedPurchases, totalCheckedPurchasePrice, o
                     <div className='flex flex-col gap-4 border-2 border-gray-100 rounded-lg p-5 h-[140px] w-full overflow-hidden'>
                       <PayPalScriptProvider
                         options={{
-                          clientId: 'AcOq3RkWYOLeq6hxAwkXFv4jenjO_oCS8qKKWQigf5Sy1O_QtRwQMeBRqylsZ7y3EG85Miv9EtGrtkwu'
+                          clientId: 'AT-Qp_p1QtgwH3CvDX2RVnzNio9RjcvyIHjn-KYXjXOxhQWEnwc-EUm6ZA3_giS6GV7RdgeTWshMBSWr'
                         }}
                       >
                         <PayPalButtons
