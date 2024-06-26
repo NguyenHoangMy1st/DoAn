@@ -9,7 +9,6 @@ import purchaseApi from 'src/apis/purchase.api'
 import { formatCurrency } from 'src/utils/utils'
 import useSearchProducts from 'src/hooks/useSearchProducts'
 import logo1 from 'src/assets/images/logo1.png'
-import { FaPhone } from 'react-icons/fa'
 const MAX_PURCHASES = 5
 export default function Header() {
   const { isAuthenticated } = useContext(AppContext)
