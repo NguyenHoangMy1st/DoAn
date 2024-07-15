@@ -126,7 +126,7 @@ const Dashboard = () => {
   return (
     <div className='border border-gray-200 rounded-lg w-full px-4 pt-4 flex flex-col gap-8'>
       <h1 className='font-bold text-[24px] text-center'>Thống kê</h1>
-      <Space direction='horizontal' className='flex items-start gap-5'>
+      <Space direction='horizontal' className='flex items-center gap-5 justify-center'>
         <DashboardCard
           icon={
             <ShoppingCartOutlined
@@ -171,21 +171,6 @@ const Dashboard = () => {
           }
           title={'Customer'}
           value={lengthAccount}
-        />
-        <DashboardCard
-          icon={
-            <DollarCircleOutlined
-              style={{
-                color: 'red',
-                backgroundColor: 'rgba(255,0,0,0.25)',
-                borderRadius: 20,
-                fontSize: 24,
-                padding: 8
-              }}
-            />
-          }
-          title={'Revenue'}
-          value='20'
         />
       </Space>
       <div className='border rounded-lg p-3 mb-2'>
